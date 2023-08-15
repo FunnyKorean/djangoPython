@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Все товары</title>
+</head>
+<body>
+    <h1>Все товары по выбранной категории</h1>
+    <hr>
+    {% for i in products %}
+    <a href="/product/{{i.id}}">{{i.product_name}}</a>
+    {% endfor %}
+</body>
+</html>

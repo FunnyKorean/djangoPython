@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+</head>
+<body>
+    <h1>Добро пожаловать в наш интернет-магазин</h1>
+    <hr>
+    <form action="post">
+        {% csrf_token %}
+        <input type="text">
+        <button>Поиск</button>
+    </form>
+    <hr>
+    <a href="/about"><h2>О нас</h2></a>
+    <hr>
+    <a href="/contact"><h2>Контакты</h2></a>
+    <hr>
+    Категории:
+    {% for category in categories %}
+    <a href="category/{{ category.id}}">{{ category.category_name}}</a>
+    {% endfor %}
+    <hr>
+    Продукты:
+    {% for product in products %}
+    <a href="product/{{ product.id}}">{{ product.product_name}}</a>
+    {% endfor %}
+</body>
+</html>
