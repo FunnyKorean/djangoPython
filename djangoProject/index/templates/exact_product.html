@@ -1,27 +1,41 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>О продукте</title>
-</head>
-<body>
-Название товара: {{product.product_name}} <br>
-Описание: {{product.product_des}} <br>
-Цена: {{product.product_price}} <br>
-Количество: {{product.product_amount}} <br>
-<img src="{{product.product_photo}}" alt="фото товара">
-<hr>
+{% extends 'index.html' %}
+{% load static %}
 
-{% if user.is_authenticated %}
-    <form action="/add-to-cart/{{product.id}}" method="POST">
-    {% csrf_token %}
-    <input type="number" min="1" name="product_amount">
-    <button>Add to cart</button>
-    </form>
+{% block content %}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 padding-right">
+            <div class="product-details"><!--product-details-->
+                <div class="col-sm-5">
+                    <div class="view-product">
+                        <img src="/{{ product.product_photo }}" alt="" /> <!--product image-->
+                    </div>
 
-    {% else %}
-    <a href="/accounts/login">Войти</a>
-    <a href="/register">Регистрация</a>
-    {% endif %}
-</body>
-</html>
+                </div>
+                <div class="col-sm-7">
+                    <div class="product-information"><!--/product-information-->
+                        <img src="{% static 'images/product-details/new.jpg' %}" class="newarrival" alt="" />
+                        <h2>{{ product.product_name }}</h2>
+                        <span>
+                            <span>{{ product.product_price }} сум</span><br>
+                            <label>Quantity</label><br>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="number" name="product_quantity" />
+                                <button type="submit" class="btn btn-fefault cart">
+                                    <i class="fa fa-shopping-cart"></i>
+                                          Add to cart
+                                </button>
+                            </form>
+                        </span>
+                        <p><b>Description:</b> {{ product.product_des }}</p>
+                        <a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
+                    </div><!--/product-information-->
+                </div>
+            </div><!--/product-details-->
+        </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
