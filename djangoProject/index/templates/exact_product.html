@@ -10,6 +10,18 @@
 Цена: {{product.product_price}} <br>
 Количество: {{product.product_amount}} <br>
 <img src="{{product.product_photo}}" alt="фото товара">
+<hr>
 
+{% if user.is_authenticated %}
+    <form action="/add-to-cart/{{product.id}}" method="POST">
+    {% csrf_token %}
+    <input type="number" min="1" name="product_amount">
+    <button>Add to cart</button>
+    </form>
+
+    {% else %}
+    <a href="/accounts/login">Войти</a>
+    <a href="/register">Регистрация</a>
+    {% endif %}
 </body>
 </html>

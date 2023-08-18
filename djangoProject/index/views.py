@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from . import forms
 from . import models
+from . import handlers
 
 
 def home_page(request):
@@ -47,3 +48,54 @@ def search_product(request):
 
         except:
             return redirect('/')
+
+
+def add_to_cart(request, pk):
+
+    if request.method == 'POST':
+        checker = models.Product.objects.get(id=pk)
+        if checker.product_amount >= int(request.POST.get('product_amount')):
+            models.Cart.objects.create(user_id=request.user.id,
+                                       user_product=checker,
+                                       user_product_count=int(request.POST.get('product_amount'))).save()
+            return redirect('/')
+        else:
+            return redirect('/')
+
+
+def user_cart(request):
+    cart = models.Cart.objects.filter(user_id=request.user.id)
+
+    if request.method == 'POST':
+        main_text = 'Новый заказ! \n\n'
+        for i in cart:
+            main_text += f'Товар: {i.user_product}\n' \
+                         f'Количетво {i.user_product_count}\n'
+        handlers.bot.send_message(2176939, main_text)
+        cart.delete()
+        return redirect('/')
+    context = {'cart': cart}
+    return render(request, 'user_cart.html', context)
+
+
+def del_from_cart(request, pk):
+    product_to_delete = models.Product.objects.get(id=pk)
+    models.Cart.objects.filter(user_id=request.user.id,
+                               user_product=product_to_delete).delete()
+
+    return redirect('/cart')
+
+
+def register(request):
+    if request.method == 'POST':
+        form = forms.RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    else:
+        form = forms.RegisterForm()
+
+    context = {'form': form}
+    return render(request, 'registration/register.html', context)
+
+
