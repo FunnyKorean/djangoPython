@@ -35,7 +35,7 @@
 								<h4>{{ i.user_product_count }}</h4>
 							</td>
 							<td class="cart_total">
-								<h4>{% widthratio i.user_product.product_price 1 i.user_product_amount %}</h4>
+								<h4>{% widthratio i.user_product.product_price 1 i.user_product_count %}</h4>
 							</td>
 							<td class="cart_delete">
 								<a class="cart_quantity_delete" href="/del-item/{{ i.user_product.id }}"><i class="fa fa-times"></i></a>
